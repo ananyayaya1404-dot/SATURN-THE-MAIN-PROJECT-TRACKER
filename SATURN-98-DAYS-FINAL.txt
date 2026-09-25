@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SATURN — 98 DAYS</title>
+<meta name="theme-color" content="#070916">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050611;--bg2:#090b1c;--card:rgba(16,19,43,.72);--line:rgba(255,255,255,.11);
+  --text:#f6f5ff;--muted:#9da2c8;--pink:#ff73c7;--purple:#9a7cff;--blue:#62b8ff;
+  --cyan:#69e7ff;--good:#72e5b2;--danger:#ff6b91;--shadow:0 25px 80px rgba(0,0,0,.45);
+  --radius:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+ radial-gradient(circle at 15% 15%,rgba(119,77,255,.14),transparent 28%),
+ radial-gradient(circle at 85% 20%,rgba(255,72,187,.10),transparent 25%),
+ radial-gradient(circle at 50% 100%,rgba(49,159,255,.08),transparent 35%),var(--bg);
+ color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+#space{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.35;animation:twinkle 3s infinite ease-in-out}
+@keyframes twinkle{50%{opacity:1;transform:scale(1.6)}}
+.nebula{position:absolute;width:45vw;height:45vw;border-radius:50%;filter:blur(80px);opacity:.12}
+.n1{background:#7c4dff;left:-15vw;top:15vh}.n2{background:#ff4fb7;right:-15vw;top:5vh}.n3{background:#3e9dff;left:30vw;bottom:-25vw}
+.screen{min-height:100vh;padding:30px}
+.center{display:grid;place-items:center}
+.login-wrap{width:min(1050px,100%);display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center}
+.hero{padding:35px}
+.brand{font-family:Orbitron,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.brand b{color:var(--pink)}
+.hero h1{font-family:Orbitron,sans-serif;font-size:clamp(36px,6vw,72px);line-height:1;margin:18px 0}
+.hero p{color:var(--muted);max-width:580px;line-height:1.8;font-size:16px}
+.saturn{width:170px;height:170px;position:relative;margin:0 auto 35px}
+.planet{position:absolute;width:105px;height:105px;left:33px;top:33px;border-radius:50%;
+ background:radial-gradient(circle at 30% 28%,#ffd5ef,#d58cf7 28%,#7b64e9 65%,#24224c 100%);
+ box-shadow:0 0 45px rgba(164,117,255,.45),inset -18px -15px 30px rgba(20,10,60,.35)}
+.ring{position:absolute;left:4px;top:57px;width:162px;height:55px;border:9px solid rgba(255,184,239,.65);
+ border-radius:50%;transform:rotate(-13deg);box-shadow:0 0 25px rgba(255,115,199,.3)}
+.ring:after{content:"";position:absolute;inset:8px;border:3px solid rgba(111,190,255,.35);border-radius:50%}
+.glass{background:linear-gradient(145deg,rgba(22,25,55,.78),rgba(10,12,30,.65));border:1px solid var(--line);
+ box-shadow:var(--shadow);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:var(--radius)}
+.login-card{padding:34px;max-width:470px;width:100%;justify-self:end}
+.login-card h2{font-family:Orbitron,sans-serif;margin:0 0 8px;font-size:24px}
+.login-card p{color:var(--muted);font-size:13px}
+.pin{width:100%;padding:17px 18px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.045);
+ color:#fff;outline:none;font-size:22px;letter-spacing:.45em;text-align:center;margin:20px 0}
+.pin:focus{border-color:rgba(255,115,199,.65);box-shadow:0 0 0 4px rgba(255,115,199,.08)}
+.primary{border:0;border-radius:16px;padding:15px 18px;color:white;font-weight:700;
+ background:linear-gradient(135deg,#7b5cff,#d657b5);box-shadow:0 12px 35px rgba(126,82,255,.28)}
+.primary:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.secondary{border:1px solid var(--line);border-radius:14px;padding:11px 14px;color:white;background:rgba(255,255,255,.05)}
+.error{color:#ff8ca7;min-height:20px;font-size:13px}
+.love{position:fixed;right:18px;bottom:16px;color:#ffd5f0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.75;z-index:20}
+.love:before{content:"♡";font-size:18px;margin-right:5px;color:var(--pink)}
+.app{min-height:100vh;padding:22px 24px 60px}
+.topbar{max-width:1400px;margin:0 auto 22px;display:flex;justify-content:space-between;gap:15px;align-items:center}
+.logo{font-family:Orbitron,sans-serif;font-weight:700;letter-spacing:.1em}
+.logo span{color:var(--pink)}
+.top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.pill.live{color:#9ff5c9;border-color:rgba(114,229,178,.35)}
+.pill.live:before{content:"";display:inline-block;width:7px;height:7px;background:var(--good);border-radius:50%;margin-right:7px;box-shadow:0 0 10px var(--good)}
+.container{max-width:1400px;margin:auto}
+.hero-row{display:grid;grid-template-columns:1.45fr .55fr;gap:18px}
+.card{padding:24px}
+.kicker{font-size:11px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+.big-day{font-family:Orbitron,sans-serif;font-size:clamp(42px,7vw,78px);margin:8px 0 4px}
+.big-day small{font-size:.25em;color:var(--pink);letter-spacing:.18em}
+.countdown{font-family:Orbitron,sans-serif;font-size:clamp(22px,4vw,43px);letter-spacing:.08em;margin:15px 0}
+.count-label{color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.progress{height:10px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:20px}
+.progress>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#6c5cff,#d96ab9,#68cfff);box-shadow:0 0 18px rgba(155,112,255,.5);width:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:15px}
+.stat{padding:16px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035)}
+.stat strong{font-family:Orbitron;font-size:25px;display:block;margin-top:6px}
+.stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.saturn-mini{height:100%;min-height:230px;display:grid;place-items:center}
+.saturn-mini .saturn{transform:scale(.82)}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:30px 0 14px}
+.section-title h2{font-family:Orbitron;margin:0;font-size:19px}
+.section-title p{margin:0;color:var(--muted);font-size:12px}
+.calendar-card{overflow:auto}
+.calendar{display:grid;grid-template-columns:36px repeat(var(--months),minmax(55px,1fr));min-width:760px;gap:4px}
+.month-head{height:32px;display:grid;place-items:center;color:#d7d8f2;font-size:11px;letter-spacing:.09em;text-transform:uppercase}
+.day-number{height:28px;display:grid;place-items:center;color:#7f84aa;font-size:10px}
+.mood-cell{height:28px;border-radius:7px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.025);transition:.18s;position:relative}
+.mood-cell.empty{opacity:.12}
+.mood-cell.future{background:rgba(255,255,255,.018);border-style:dashed}
+.mood-cell.clickable{cursor:pointer}
+.mood-cell.clickable:hover{transform:scale(1.06);z-index:2;box-shadow:0 0 18px rgba(255,255,255,.12)}
+.mood-cell.today{outline:2px solid #fff;outline-offset:1px;box-shadow:0 0 18px rgba(255,115,199,.55)}
+.mood-cell.completed:after{content:"";position:absolute;right:3px;bottom:3px;width:4px;height:4px;border-radius:50%;background:#fff;opacity:.9}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.legend span{font-size:10px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mood-options,.quest-options{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mood-btn,.quest-btn{border:1px solid var(--line);background:rgba(255,255,255,.035);color:white;border-radius:16px;padding:13px 8px;min-height:72px}
+.mood-btn:hover,.quest-btn:hover{background:rgba(255,255,255,.075)}
+.mood-btn.selected,.quest-btn.selected{border-color:rgba(255,255,255,.55);box-shadow:0 0 20px rgba(150,120,255,.18);background:rgba(130,100,255,.13)}
+.mood-emoji{font-size:22px;display:block;margin-bottom:6px}.mood-name{font-size:11px;color:#c7c9df}
+.quest-btn{text-align:left;min-height:62px}.quest-btn .check{float:right;color:var(--good);opacity:0}.quest-btn.selected .check{opacity:1}
+textarea{width:100%;min-height:190px;resize:vertical;border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.2);color:white;padding:16px;outline:none;line-height:1.6}
+textarea:focus{border-color:rgba(115,185,255,.55)}
+.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.status-line{font-size:11px;color:var(--muted);margin-top:10px}
+.feed{display:grid;gap:9px;max-height:260px;overflow:auto}
+.feed-item{padding:12px 14px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.03)}
+.feed-item strong{font-size:13px}.feed-item small{display:block;color:var(--muted);margin-top:4px}
+.reactions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.reaction{padding:14px;border-radius:17px;border:1px solid var(--line);background:rgba(255,255,255,.035);color:#fff}
+.reaction:hover{background:rgba(255,115,199,.09);transform:translateY(-1px)}
+.readonly{opacity:.9}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);display:grid;place-items:center;padding:20px;z-index:50}
+.modal{width:min(650px,100%);max-height:85vh;overflow:auto;padding:25px}
+.modal h2{font-family:Orbitron;margin-top:0}.modal p{color:var(--muted);line-height:1.6}
+.modal .journal-read{white-space:pre-wrap;border:1px solid var(--line);border-radius:16px;padding:15px;background:rgba(255,255,255,.03);line-height:1.6}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.toast-stack{position:fixed;left:18px;bottom:18px;z-index:60;display:grid;gap:9px;width:min(350px,calc(100vw - 36px))}
+.toast{padding:13px 15px;border:1px solid rgba(255,255,255,.14);border-radius:16px;background:rgba(15,17,39,.94);box-shadow:0 15px 45px rgba(0,0,0,.4);animation:toastIn .35s ease}
+.toast strong{display:block;font-size:12px}.toast span{font-size:11px;color:var(--muted)}
+@keyframes toastIn{from{transform:translateX(-20px);opacity:0}to{transform:none;opacity:1}}
+.footer-note{color:#70769b;font-size:10px;text-align:center;margin:30px 0 0;line-height:1.6}
+@media(max-width:900px){.login-wrap,.hero-row,.main-grid{grid-template-columns:1fr}.login-card{justify-self:stretch;max-width:none}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.screen{padding:16px}.app{padding:15px 12px 45px}.card{padding:17px}.mood-options,.quest-options{grid-template-columns:repeat(2,1fr)}.reactions{grid-template-columns:repeat(2,1fr)}.topbar{align-items:flex-start}.hero{padding:10px}.big-day{font-size:45px}.countdown{font-size:22px}.love{right:10px;bottom:8px}}
+
+/* ===================== SATURN POLISH — ONLY THE REQUESTED GRIDS + LOCK SCREEN ===================== */
+/* Day boxes: clean square tiles, not giant cards. Everything else keeps the original SATURN styling. */
+.days-grid{display:grid;grid-template-columns:repeat(7,minmax(76px,1fr));gap:10px;align-items:stretch}
+.day-card{min-height:0;aspect-ratio:1/1;padding:11px;text-align:center;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:linear-gradient(145deg,rgba(24,27,60,.78),rgba(10,12,30,.7));color:var(--text);box-shadow:0 12px 35px rgba(0,0,0,.24);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,opacity .18s ease}
+.day-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.08),transparent 55%);pointer-events:none}
+.day-card:not(:disabled):hover{transform:translateY(-3px);border-color:rgba(154,124,255,.45);box-shadow:0 16px 40px rgba(0,0,0,.32),0 0 24px rgba(154,124,255,.12)}
+.day-card .day-num{display:block;font-family:Orbitron,sans-serif;font-size:14px;letter-spacing:.06em;position:relative;z-index:1}
+.day-card .day-date{display:block;font-size:8px;color:#858bad;margin-top:7px;line-height:1.3;position:relative;z-index:1}
+.day-card .day-mood{display:block;font-size:25px;margin-top:9px;min-height:28px;position:relative;z-index:1}
+.day-card .day-status{display:block;font-size:6px;letter-spacing:1.2px;color:#72789d;margin-top:8px;position:relative;z-index:1}
+.day-card.today{border-color:rgba(190,176,255,.85);background:linear-gradient(145deg,rgba(55,47,100,.9),rgba(17,18,45,.78));box-shadow:0 0 0 1px rgba(154,124,255,.18),0 0 32px rgba(118,102,255,.22),0 18px 45px rgba(0,0,0,.3)}
+.day-card.today .day-num{color:#fff}
+.day-card.today .day-status{color:#b8adff;font-weight:800}
+.day-card.today:after{content:"TODAY";position:absolute;right:8px;top:7px;font-size:5px;letter-spacing:1.2px;color:#c5bcff;font-weight:800;opacity:.9}
+.day-card.future{opacity:.22;filter:saturate(.35);cursor:not-allowed}
+.day-card.past{opacity:.78}
+.day-card.past:after{content:"SEALED";position:absolute;right:8px;top:7px;font-size:5px;letter-spacing:1px;color:#747a9a}
+.mood-grid{display:grid!important;grid-template-columns:repeat(14,42px)!important;grid-auto-rows:42px!important;gap:8px!important;width:max-content;margin:auto;padding:10px 4px 15px}
+.mood-grid .mood-cell{width:42px!important;height:42px!important;border-radius:10px!important}
+.mood-grid .mood-cell:before{display:none}
+.mood-grid .cell-number{display:block!important;position:absolute;left:50%;top:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);font-size:8px;color:#fff;font-weight:800;text-shadow:0 1px 5px #000}
+.inline-palette{display:none;width:max-content;max-width:100%;margin:12px auto 2px;padding:12px;border:1px solid #ffffff1a;border-radius:18px;background:#0b0d1bee;box-shadow:0 20px 50px #000a;grid-template-columns:repeat(8,40px);gap:7px}
+.inline-palette.show{display:grid}
+.inline-palette button{width:40px;height:40px;border-radius:11px;border:1px solid #ffffff18;background:#ffffff08;font-size:19px}
+.inline-palette button:hover{transform:scale(1.08)}
+.connection-live{color:#9ff5c9!important;border-color:#72e5b255!important}.connection-live:before{content:"";display:inline-block;width:7px;height:7px;background:#72e5b2;border-radius:50%;margin-right:7px;box-shadow:0 0 10px #72e5b2}
+/* The original lock page is kept, but made properly hidden and more cinematic. */
+.lock-page{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 38%,#3b2a72 0,#17122f 27%,#08091a 58%,#02030a 100%);animation:lockIn .45s ease}
+.lock-page.hidden{display:none!important}
+@keyframes lockIn{from{opacity:0;transform:scale(1.025)}to{opacity:1;transform:none}}
+.lock-stars{position:absolute;inset:-30px;background-image:radial-gradient(circle,#fff 1px,transparent 1px),radial-gradient(circle,#c8baff 1px,transparent 1px);background-size:72px 72px,121px 121px;background-position:0 0,35px 20px;opacity:.2;animation:starsMove 22s linear infinite}
+@keyframes starsMove{to{transform:translate(72px,72px)}}
+.lock-orbit{position:absolute;border:1px solid #b39fff2b;border-radius:50%;width:78vw;height:27vw;left:11vw;top:35%;transform:rotate(-17deg);box-shadow:0 0 35px #8f79ff0b}
+.orbit-b{width:92vw;height:38vw;left:4vw;top:30%;border-color:#68dfff20;transform:rotate(18deg)}
+.lock-planet{width:168px;height:168px;border-radius:50%;position:absolute;top:10%;left:50%;transform:translateX(-50%);background:radial-gradient(circle at 30% 25%,#fff4fb,#e19af8 27%,#7760e4 63%,#17132e 100%);box-shadow:0 0 35px #b083ff55,0 0 100px #8d73ff35,inset -24px -22px 35px #0b0722aa}
+.lock-ring{position:absolute;width:255px;height:74px;border:10px solid #ffb5e777;border-radius:50%;left:-44px;top:47px;transform:rotate(-15deg);box-shadow:0 0 34px #ff75c733,0 0 80px #ff75c711}
+.lock-card{position:relative;margin-top:205px;width:min(590px,90%);padding:38px 34px;text-align:center;border:1px solid rgba(255,255,255,.16);border-radius:32px;background:linear-gradient(145deg,rgba(15,16,38,.88),rgba(7,8,21,.82));backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);box-shadow:0 35px 120px rgba(0,0,0,.68),0 0 70px rgba(126,96,255,.12)}
+.lock-kicker{font-size:9px;letter-spacing:4px;color:#aaa0ff;font-weight:800}.lock-day{font-family:Orbitron;font-size:56px;margin:12px 0 5px;text-shadow:0 0 25px rgba(190,170,255,.18)}.lock-date{color:#858bad;font-size:10px}.lock-line{width:90px;height:1px;background:linear-gradient(90deg,transparent,#9a7cff88,transparent);margin:22px auto}.lock-message{color:#b8bdd7;font-size:12px;line-height:1.8;max-width:410px;margin:auto}.lock-buttons{display:flex;justify-content:center;gap:10px;margin-top:26px;flex-wrap:wrap}
+@media(max-width:900px){.days-grid{grid-template-columns:repeat(5,minmax(76px,1fr));overflow-x:auto;padding-bottom:4px}}
+@media(max-width:600px){.days-grid{grid-template-columns:repeat(4,72px);gap:8px;overflow-x:visible}.day-card{width:72px;height:72px;border-radius:15px;padding:8px}.day-card .day-num{font-size:11px}.day-card .day-date{font-size:6px;margin-top:4px}.day-card .day-mood{font-size:19px;margin-top:4px;min-height:21px}.day-card .day-status{font-size:5px;margin-top:4px}.mood-grid{grid-template-columns:repeat(14,34px)!important;grid-auto-rows:34px!important;gap:6px!important}.mood-grid .mood-cell{width:34px!important;height:34px!important}.mood-grid .cell-number{font-size:7px}.inline-palette{grid-template-columns:repeat(4,40px)}.lock-day{font-size:39px}.lock-card{padding:30px 20px;margin-top:180px}.lock-planet{width:125px;height:125px}.lock-ring{width:190px;height:58px;left:-33px;top:34px}}
+
+/* ===================== FINAL PIN PAGE — bubble retro / dreamy space ===================== */
+.pin-screen{position:relative;overflow:hidden;padding:24px;background:
+  radial-gradient(circle at 18% 18%,rgba(255,104,202,.20),transparent 24%),
+  radial-gradient(circle at 82% 22%,rgba(83,181,255,.19),transparent 26%),
+  radial-gradient(circle at 50% 92%,rgba(147,93,255,.17),transparent 34%),
+  linear-gradient(145deg,#05050f 0%,#10091e 46%,#061426 100%)}
+.pin-screen:before{content:"";position:absolute;inset:0;background-image:
+ radial-gradient(circle at 12% 28%,#fff 0 1px,transparent 1.5px),
+ radial-gradient(circle at 78% 14%,#d9c8ff 0 1px,transparent 1.5px),
+ radial-gradient(circle at 66% 78%,#fff 0 1px,transparent 1.5px),
+ radial-gradient(circle at 25% 84%,#b8eaff 0 1px,transparent 1.5px);background-size:180px 160px,240px 220px,210px 190px,270px 240px;opacity:.32;animation:pinStars 18s linear infinite}
+@keyframes pinStars{to{background-position:35px 20px,-25px 35px,30px -25px,-35px 25px}}
+.pin-shell{position:relative;z-index:3;width:min(510px,calc(100vw - 34px));padding:30px 34px 24px;border:1px solid rgba(226,190,255,.24);border-radius:42px;background:
+ linear-gradient(145deg,rgba(31,20,53,.82),rgba(11,10,30,.88) 54%,rgba(7,22,40,.86));
+ box-shadow:0 45px 120px rgba(0,0,0,.65),0 0 70px rgba(213,110,244,.13),inset 0 1px rgba(255,255,255,.14);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);text-align:center;overflow:hidden}
+.pin-shell:before{content:"";position:absolute;width:260px;height:260px;left:-145px;top:-150px;border-radius:50%;background:rgba(255,91,205,.18);filter:blur(20px)}
+.pin-shell:after{content:"";position:absolute;width:260px;height:260px;right:-150px;bottom:-160px;border-radius:50%;background:rgba(72,185,255,.16);filter:blur(24px)}
+.pin-top-glow{position:absolute;left:50%;top:-90px;width:260px;height:180px;transform:translateX(-50%);border-radius:50%;background:rgba(184,107,255,.23);filter:blur(38px);pointer-events:none}
+.pin-brand,.pin-saturn-wrap,.pin-title,.pin-subtitle,.pin-divider,.pin-access,.pin-footer{position:relative;z-index:2}
+.pin-brand{font:700 10px/1 Inter,sans-serif;letter-spacing:.30em;color:#c9c5e7;margin-top:2px}
+.pin-brand span{color:#ff9fda}
+.pin-saturn-wrap{width:190px;height:145px;margin:7px auto 2px;position:relative;filter:drop-shadow(0 0 22px rgba(183,115,255,.28))}
+.pin-saturn-planet{position:absolute;width:92px;height:92px;left:49px;top:25px;border-radius:50%;background:radial-gradient(circle at 28% 22%,#fff6ff 0,#efb9ff 14%,#bd78ee 34%,#7750bd 66%,#25163f 100%);box-shadow:0 0 35px rgba(216,131,255,.58),0 0 90px rgba(135,86,255,.22),inset -18px -20px 27px rgba(35,14,67,.38)}
+.pin-saturn-planet:after{content:"";position:absolute;width:28px;height:15px;left:18px;top:16px;border-radius:50%;background:rgba(255,255,255,.32);filter:blur(7px)}
+.pin-saturn-planet i{position:absolute;inset:0;border-radius:50%;background:linear-gradient(165deg,transparent 42%,rgba(255,207,250,.14) 44%,transparent 47%,transparent 59%,rgba(20,9,42,.18) 61%,transparent 64%)}
+.pin-saturn-ring{position:absolute;width:185px;height:58px;left:2px;top:42px;border-radius:50%;transform:rotate(-15deg)}
+.pin-saturn-ring:before{content:"";position:absolute;inset:0;border:7px solid rgba(239,185,255,.70);border-left-color:rgba(137,210,255,.60);border-right-color:rgba(255,166,225,.82);border-radius:50%;box-shadow:0 0 22px rgba(255,126,221,.35)}
+.pin-saturn-ring:after{content:"";position:absolute;inset:10px;border:2px solid rgba(105,198,255,.38);border-radius:50%}
+.ring-back{z-index:0;filter:blur(.2px)}.ring-front{z-index:3;clip-path:inset(50% 0 0 0)}
+.pin-title{font-family:Orbitron,sans-serif;font-size:31px;font-weight:700;letter-spacing:.30em;margin-left:.30em;text-shadow:0 0 20px rgba(219,170,255,.30)}
+.pin-subtitle{margin-top:8px;color:#b6b2d0;font-size:11px;letter-spacing:.06em}
+.pin-divider{display:flex;align-items:center;justify-content:center;gap:10px;margin:20px 0 17px;color:#d9a5ff;font-size:10px}
+.pin-divider span{width:58px;height:1px;background:linear-gradient(90deg,transparent,rgba(214,151,255,.55))}.pin-divider span:last-child{background:linear-gradient(90deg,rgba(214,151,255,.55),transparent)}
+.pin-access{padding:22px 22px 20px;border:1px solid rgba(255,194,237,.16);border-radius:27px;background:linear-gradient(145deg,rgba(255,174,230,.075),rgba(92,182,255,.055));box-shadow:inset 0 1px rgba(255,255,255,.08)}
+.pin-kicker{font-size:8px;letter-spacing:.28em;color:#f09bd8;font-weight:800}
+.pin-access h2{font-family:Orbitron,sans-serif;font-size:18px;letter-spacing:.08em;margin:9px 0 12px}
+.pin-input-wrap{display:flex;align-items:center;gap:9px;height:60px;padding:0 10px;border:1px solid rgba(218,171,255,.23);border-radius:20px;background:rgba(3,6,21,.50);box-shadow:inset 0 0 24px rgba(107,181,255,.055),0 10px 28px rgba(0,0,0,.20)}
+.pin-input-wrap:focus-within{border-color:rgba(255,143,220,.72);box-shadow:0 0 0 4px rgba(255,115,199,.07),0 0 32px rgba(100,190,255,.10)}
+.pin-dot{color:#83d8ff;font-size:14px;opacity:.65}.pin-dot:last-child{color:#ff9bdd}
+.pin{flex:1;width:100%;height:56px;margin:0;padding:0;border:0!important;background:transparent!important;box-shadow:none!important;color:#fff;outline:none;font:700 24px/1 Inter,sans-serif;letter-spacing:.68em;text-align:center}
+.pin::placeholder{color:#8d87a9;opacity:.8}
+.pin-enter{height:54px;margin-top:13px;border-radius:18px!important;background:linear-gradient(100deg,#8a55ff 0%,#c65fd0 50%,#55bfff 100%)!important;box-shadow:0 13px 34px rgba(174,80,206,.24),0 0 28px rgba(85,184,255,.10)!important;font-size:11px;letter-spacing:.10em;transition:transform .18s ease,filter .18s ease}
+.pin-enter:hover{transform:translateY(-2px);filter:brightness(1.09)}
+.pin-enter span{margin-left:6px;color:#ffe8fa}
+.pin-footer{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;color:#777695;font-size:7px;letter-spacing:.18em}.pin-footer i{width:3px;height:3px;border-radius:50%;background:#9f7bff;box-shadow:0 0 8px #9f7bff}
+.pin-orbit-orb{position:absolute;border-radius:50%;filter:blur(2px);pointer-events:none;z-index:1}.orb-a{width:330px;height:330px;left:-170px;top:12%;background:radial-gradient(circle,rgba(255,85,201,.22),transparent 66%);animation:pinDriftA 9s ease-in-out infinite}.orb-b{width:380px;height:380px;right:-190px;bottom:4%;background:radial-gradient(circle,rgba(79,192,255,.20),transparent 66%);animation:pinDriftB 11s ease-in-out infinite}
+.pin-bubble{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.22),rgba(255,126,214,.06) 40%,rgba(92,191,255,.03) 70%,transparent 71%);box-shadow:inset -10px -12px 20px rgba(52,20,89,.18),0 0 24px rgba(192,119,255,.08);z-index:1;pointer-events:none}.bubble-a{width:58px;height:58px;left:9%;top:18%;animation:pinFloatA 6s ease-in-out infinite}.bubble-b{width:34px;height:34px;right:12%;top:30%;animation:pinFloatB 5s ease-in-out infinite}.bubble-c{width:76px;height:76px;right:8%;bottom:15%;animation:pinFloatA 8s ease-in-out infinite reverse}
+@keyframes pinDriftA{50%{transform:translate(45px,-22px) scale(1.08)}}@keyframes pinDriftB{50%{transform:translate(-40px,25px) scale(1.06)}}@keyframes pinFloatA{50%{transform:translateY(-15px) translateX(7px)}}@keyframes pinFloatB{50%{transform:translateY(12px) translateX(-5px)}}
+@media(max-width:600px){.pin-shell{padding:25px 18px 20px;border-radius:32px}.pin-saturn-wrap{transform:scale(.9);margin-top:0;margin-bottom:-4px}.pin-title{font-size:26px}.pin-access{padding:19px 15px}.pin-orbit-orb{opacity:.7}.bubble-a{left:2%}.bubble-b{right:4%}}
+</style>
+</head>
+<body>
+<div id="space"><div class="nebula n1"></div><div class="nebula n2"></div><div class="nebula n3"></div></div>
+<div id="loginScreen" class="screen center pin-screen">
+  <div class="pin-orbit-orb orb-a"></div>
+  <div class="pin-orbit-orb orb-b"></div>
+  <div class="pin-bubble bubble-a"></div>
+  <div class="pin-bubble bubble-b"></div>
+  <div class="pin-bubble bubble-c"></div>
+  <div class="pin-shell">
+    <div class="pin-top-glow"></div>
+    <div class="pin-brand">SATURN <span>✦ 98 DAYS</span></div>
+    <div class="pin-saturn-wrap">
+      <div class="pin-saturn-ring ring-back"></div>
+      <div class="pin-saturn-planet"><i></i></div>
+      <div class="pin-saturn-ring ring-front"></div>
+    </div>
+    <div class="pin-title">SATURN</div>
+    <div class="pin-subtitle">98 days · one little universe</div>
+    <div class="pin-divider"><span></span><b>✦</b><span></span></div>
+    <div class="pin-access">
+      <div class="pin-kicker">PRIVATE ACCESS</div>
+      <h2>ENTER YOUR PIN</h2>
+      <div class="pin-input-wrap">
+        <span class="pin-dot">•</span>
+        <input id="pinInput" class="pin" inputmode="numeric" maxlength="4" type="password" placeholder="••••" autocomplete="off" aria-label="Enter your PIN">
+        <span class="pin-dot">•</span>
+      </div>
+      <button id="loginBtn" class="primary pin-enter" style="width:100%">ENTER THE UNIVERSE <span>✦</span></button>
+      <div id="loginError" class="error" style="margin-top:12px"></div>
+    </div>
+    <div class="pin-footer"><span>PRIVATE</span><i></i><span>98 ORBITS</span><i></i><span>✦</span></div>
+  </div>
+</div>
+<section id="ownerApp" class="app hidden">
+  <div class="topbar">
+    <div class="logo">SATURN <span>— 98 DAYS</span></div>
+    <div class="top-actions">
+      <span class="pill">ANNI</span>
+      <span id="connectionStatus" class="pill">OFFLINE • A MIN AGO</span>
+      <span id="viewerPresence" class="pill">ADY • OFFLINE</span>
+      <button id="ownerReset" class="secondary">Reset</button>
+      <button id="ownerLogout" class="secondary">Exit</button>
+    </div>
+  </div>
+  <main class="container">
+    <div class="hero-row">
+      <div class="card glass">
+        <div class="kicker">Current orbit</div>
+        <div id="ownerDay" class="big-day">DAY 01 <small>OF 98</small></div>
+        <div id="ownerCountdown" class="countdown">98:00:00:00</div>
+        <div id="ownerCountdownLabel" class="count-label">TIME LEFT IN THE JOURNEY</div>
+        <div class="progress"><i id="ownerProgressBar"></i></div>
+        <div class="stats">
+          <div class="stat"><span>Completed</span><strong id="ownerCompleted">0</strong></div>
+          <div class="stat"><span>Remaining</span><strong id="ownerRemaining">98</strong></div>
+          <div class="stat"><span>Progress</span><strong id="ownerPercent">0%</strong></div>
+          <div class="stat"><span>Streak</span><strong id="ownerStreak">0</strong></div>
+        </div>
+        <div id="ownerStart" class="status-line"></div>
+      </div>
+      <div class="card glass saturn-mini">
+        <div class="saturn"><div class="ring"></div><div class="planet"></div></div>
+      </div>
+    </div>
+
+    <div class="section-title"><div><h2>98 BIG DAY BOXES</h2><p>Every day gets its own space. Past days are sealed, today is editable, future days unlock automatically.</p></div></div>
+    <div class="card glass"><div id="ownerDays" class="days-grid"></div></div>
+
+    <div class="section-title"><div><h2>MOOD FILL GRID</h2><p>98 square cells — one for every day. Click today's glowing square to choose its mood.</p></div></div>
+    <div class="card glass calendar-card">
+      <div id="ownerCalendar" class="mood-grid"></div>
+      <div id="ownerMoodPalette" class="inline-palette"></div>
+      <div id="ownerLegend" class="legend"></div>
+    </div>
+
+    <div class="section-title"><div><h2>Today</h2><p id="ownerTodayMeta"></p></div></div>
+    <div class="main-grid">
+      <div class="card glass">
+        <div class="kicker">Mood</div>
+        <h2 style="font-family:Orbitron;font-size:17px">How did today feel?</h2>
+        <div id="ownerMoods" class="mood-options"></div>
+      </div>
+      <div class="card glass">
+        <div class="kicker">Today's quest</div>
+        <h2 style="font-family:Orbitron;font-size:17px">Tiny things count.</h2>
+        <div id="ownerQuests" class="quest-options"></div>
+      </div>
+      <div class="card glass">
+        <div class="kicker">Journal</div>
+        <h2 style="font-family:Orbitron;font-size:17px">Write what you want to remember.</h2>
+        <textarea id="ownerJournal" placeholder="A thought, a win, a bad moment, a tiny detail..."></textarea>
+        <div class="button-row">
+          <button id="saveDraft" class="secondary">SAVE TEMPORARILY</button>
+          <button id="savePermanent" class="primary">PERMANENTLY COMPLETE DAY</button>
+        </div>
+        <div id="journalStatus" class="status-line"></div>
+      </div>
+      <div class="card glass">
+        <div class="kicker">From viewer</div>
+        <h2 style="font-family:Orbitron;font-size:17px">Little reminders</h2>
+        <div id="ownerFeed" class="feed"></div>
+      </div>
+    </div>
+    <div class="footer-note">Local mode stores data in this browser. Online mode uses Supabase Realtime for shared data and presence. ADY never gets an ANNI-status panel in the UI.</div>
+  </main>
+</section>
+
+<section id="viewerApp" class="app hidden">
+  <div class="topbar">
+    <div class="logo">SATURN <span>— 98 DAYS</span></div>
+    <div class="top-actions">
+      <span class="pill">ADY</span>
+      <span id="viewerConnectionStatus" class="pill">OFFLINE • A MIN AGO</span>
+      <button id="viewerLogout" class="secondary">Exit</button>
+    </div>
+  </div>
+  <main class="container">
+    <div class="hero-row">
+      <div class="card glass">
+        <div class="kicker">Current orbit</div>
+        <div id="viewerDay" class="big-day">DAY 01 <small>OF 98</small></div>
+        <div id="viewerCountdown" class="countdown">98:00:00:00</div>
+        <div class="count-label">TIME LEFT IN THE JOURNEY</div>
+        <div class="progress"><i id="viewerProgressBar"></i></div>
+        <div class="stats">
+          <div class="stat"><span>Completed</span><strong id="viewerCompleted">0</strong></div>
+          <div class="stat"><span>Remaining</span><strong id="viewerRemaining">98</strong></div>
+          <div class="stat"><span>Progress</span><strong id="viewerPercent">0%</strong></div>
+          <div class="stat"><span>Streak</span><strong id="viewerStreak">0</strong></div>
+        </div>
+        <div id="viewerStart" class="status-line"></div>
+      </div>
+      <div class="card glass saturn-mini">
+        <div class="saturn"><div class="ring"></div><div class="planet"></div></div>
+      </div>
+    </div>
+
+    <div class="section-title"><div><h2>98 BIG DAY BOXES</h2><p>Every day gets its own space. Past days are sealed, today is editable, future days are waiting.</p></div></div>
+    <div class="card glass"><div id="viewerDays" class="days-grid"></div></div>
+
+    <div class="section-title"><div><h2>MOOD FILL GRID</h2><p>98 larger squares. Each square is one day. Owner can fill today's square directly.</p></div></div>
+    <div class="card glass calendar-card"><div id="viewerCalendar" class="mood-grid"></div><div id="viewerLegend" class="legend"></div></div>
+
+    <div class="section-title"><div><h2>Today</h2><p id="viewerTodayMeta"></p></div></div>
+    <div class="main-grid">
+      <div class="card glass readonly">
+        <div class="kicker">Today's mood</div>
+        <div id="viewerMood" style="font-size:32px;margin-top:10px">—</div>
+        <div id="viewerMoodName" class="status-line"></div>
+      </div>
+      <div class="card glass readonly">
+        <div class="kicker">Today's quests</div>
+        <div id="viewerQuests" class="feed"></div>
+      </div>
+      <div class="card glass readonly">
+        <div class="kicker">Journal update</div>
+        <div id="viewerJournal" class="journal-read" style="white-space:pre-wrap;line-height:1.6;margin-top:12px"></div>
+        <div id="viewerUpdated" class="status-line"></div>
+      </div>
+      <div class="card glass">
+        <div class="kicker">Send a little love</div>
+        <h2 style="font-family:Orbitron;font-size:17px">A message can reach the bottom-left of Owner's screen.</h2>
+        <div class="reactions">
+          <button class="reaction" data-reaction="♡">♡</button>
+          <button class="reaction" data-reaction="💗">💗</button>
+          <button class="reaction" data-reaction="💜">💜</button>
+          <button class="reaction" data-reaction="🪐">🪐</button>
+        </div>
+        <div class="button-row">
+          <button class="reaction" data-reaction="stay strong ✦">stay strong ✦</button>
+          <button class="reaction" data-reaction="you got this">you got this</button>
+          <button class="reaction" data-reaction="keep going">keep going</button>
+          <button class="reaction" data-reaction="proud of you">proud of you</button>
+        </div>
+        <div id="viewerSendStatus" class="status-line"></div>
+      </div>
+    </div>
+    <div class="footer-note">ADY is read-only. ADY does not receive or display ANNI online status.</div>
+  </main>
+</section>
+
+<div id="historyModal" class="modal-backdrop hidden">
+  <div class="modal glass">
+    <div class="kicker">Day memory</div>
+    <h2 id="historyTitle"></h2>
+    <div id="historyContent"></div>
+    <div class="modal-actions"><button id="closeHistory" class="secondary">Close</button></div>
+  </div>
+</div>
+
+<div id="actionModal" class="modal-backdrop hidden">
+  <div class="modal glass">
+    <div class="kicker">Please confirm</div>
+    <h2 id="actionTitle"></h2>
+    <p id="actionBody"></p>
+    <div class="modal-actions"><button id="actionCancel" class="secondary">Cancel</button><button id="actionConfirm" class="primary">Confirm</button></div>
+  </div>
+</div>
+
+<div id="lockPage" class="lock-page hidden">
+  <div class="lock-stars"></div>
+  <div class="lock-orbit orbit-a"></div><div class="lock-orbit orbit-b"></div>
+  <div class="lock-planet"><div class="lock-ring"></div></div>
+  <div class="lock-card">
+    <div class="lock-kicker">MEMORY SEALED</div>
+    <div id="lockDay" class="lock-day">DAY 01</div>
+    <div id="lockDate" class="lock-date"></div>
+    <div class="lock-line"></div>
+    <div id="lockMessage" class="lock-message">This day has crossed its orbit.</div>
+    <div class="lock-buttons"><button id="lockView" class="primary">VIEW MEMORY</button><button id="lockClose" class="secondary">BACK TO SATURN</button></div>
+  </div>
+</div>
+
+<div id="toastStack" class="toast-stack"></div>
+<div class="love">love, always</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/*
+  SATURN — 98 DAYS
+  ----------------------------------------------------------
+  1) Set TRACKER_START_DATE to your real Day 1.
+  2) For real cross-device sync, create a Supabase project and
+     paste its URL + publishable key below.
+  3) If SUPABASE_URL / SUPABASE_KEY are blank, the site works
+     in local browser-only mode using localStorage.
+  ----------------------------------------------------------
+*/
+const CONFIG = {
+  OWNER_PIN: "5545",
+  VIEWER_PIN: "1437",
+  TRACKER_START_DATE: "2026-09-24",
+  TOTAL_DAYS: 98,
+  SUPABASE_URL: "https://eshcvnqbqxzfypmzwrlg.supabase.co",
+  SUPABASE_KEY: "sb_publishable_KyHNSWB2SXUa3ob80QLL6w_7ztLCYeY"
+};
+
+const MOODS = [
+  {id:"loved",emoji:"💗",name:"Loved",color:"#ff6fae"},
+  {id:"happy",emoji:"💛",name:"Happy",color:"#ffc857"},
+  {id:"peaceful",emoji:"💙",name:"Peaceful",color:"#5fb9ff"},
+  {id:"okay",emoji:"🤍",name:"Okay",color:"#d9d9e8"},
+  {id:"emotional",emoji:"🩷",name:"A little emotional",color:"#d58cf7"},
+  {id:"low",emoji:"🩶",name:"Low",color:"#7d839c"},
+  {id:"frustrated",emoji:"❤️",name:"Frustrated",color:"#ff667d"},
+  {id:"quiet",emoji:"💜",name:"Quiet",color:"#9a7cff"}
+];
+
+const QUESTS = [
+  ["exercised","Exercised"],["cried","Cried a bit"],["laughed","Laughed"],["ate","Ate food"],
+  ["studied","Studied"],["learned","Learned something new"],["productive","Did something productive"],["hobby","Did a hobby"]
+];
+
+const MOTIVATION = [
+  "One day crossed. One little universe getting brighter.",
+  "You showed up for today. That counts.",
+  "Keep going — the small days become the big story.",
+  "Another square belongs to you now. ✦",
+  "You are building this one ordinary day at a time.",
+  "Day crossed. Breathe. Be proud of the effort.",
+  "The constellation is growing.",
+  "You made it through another orbit."
+];
+
+const STORAGE_KEY = "saturn98_local_v4";
+let data = loadLocal();
+let role = null;
+let journalDraft = "";
+let draftDay = null;
+let actionCallback = null;
+let realtimeChannel = null;
+let onlineMode = false;
+let supabaseClient = null;
+let viewerOnline = false;
+let viewerLastSeen = data.viewerLastSeen ? new Date(data.viewerLastSeen).getTime() : 0;
+
+function uid(){return crypto.randomUUID ? crypto.randomUUID() : Date.now()+"-"+Math.random().toString(16).slice(2)}
+function pad(n){return String(n).padStart(2,"0")}
+function keyFromDate(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
+function dateFromKey(k){const [y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d)}
+function addDays(k,n){const d=dateFromKey(k);d.setDate(d.getDate()+n);return keyFromDate(d)}
+function diffDays(a,b){const A=dateFromKey(a),B=dateFromKey(b);return Math.round((Date.UTC(B.getFullYear(),B.getMonth(),B.getDate())-Date.UTC(A.getFullYear(),A.getMonth(),A.getDate()))/86400000)}
+function todayKey(){return keyFromDate(new Date())}
+function longDate(k){return dateFromKey(k).toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"})}
+function timeString(iso){return new Date(iso).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}
+function esc(s=""){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+function blankDay(n,start){
+  return {number:n,date:addDays(start,n-1),mood:null,quests:{},tempJournal:"",permanentJournal:"",
+    permanentlySaved:false,completedAt:null,updatedAt:null,activity:[]};
+}
+function newData(){
+  const days={};
+  for(let i=1;i<=CONFIG.TOTAL_DAYS;i++) days[i]=blankDay(i,CONFIG.TRACKER_START_DATE);
+  return {startDate:CONFIG.TRACKER_START_DATE,days,reactions:[],motivationIndex:-1,viewerLastSeen:null};
+}
+function normalizeData(d){
+  if(!d || !d.days){return newData()}
+  d.startDate=d.startDate||CONFIG.TRACKER_START_DATE;
+  d.reactions=d.reactions||[];
+  d.motivationIndex=Number.isInteger(d.motivationIndex)?d.motivationIndex:-1;
+  d.viewerLastSeen=d.viewerLastSeen||null;
+  for(let i=1;i<=CONFIG.TOTAL_DAYS;i++){
+    d.days[i]=d.days[i]||blankDay(i,d.startDate);
+    d.days[i].number=i;
+    d.days[i].date=addDays(d.startDate,i-1);
+    d.days[i].quests=d.days[i].quests||{};
+    QUESTS.forEach(([id])=>{if(typeof d.days[i].quests[id]!=="boolean")d.days[i].quests[id]=false});
+    d.days[i].activity=d.days[i].activity||[];
+    d.days[i].locked=!!d.days[i].locked;
+  }
+  return d;
+}
+function loadLocal(){
+  try{return normalizeData(JSON.parse(localStorage.getItem(STORAGE_KEY)))}catch(e){return newData()}
+}
+function saveLocal(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
+
+function rawCurrentDay(){return diffDays(data.startDate,todayKey())+1}
+function currentDay(){return Math.min(CONFIG.TOTAL_DAYS,Math.max(1,rawCurrentDay()))}
+function activeDay(){const r=rawCurrentDay();return r>=1&&r<=CONFIG.TOTAL_DAYS?r:null}
+function addActivity(day,label){
+  const at=new Date().toISOString();
+  day.updatedAt=at;
+  day.activity=[{label,at},...(day.activity||[])].slice(0,15);
+}
+function stats(){
+  const completed=Object.values(data.days).filter(d=>d.permanentlySaved).length;
+  const raw=rawCurrentDay();
+  let n=(raw>=1&&raw<=CONFIG.TOTAL_DAYS&&data.days[raw].permanentlySaved)?raw:Math.min(CONFIG.TOTAL_DAYS,raw-1);
+  let streak=0;
+  while(n>=1 && data.days[n] && data.days[n].permanentlySaved){streak++;n--}
+  return {completed,remaining:CONFIG.TOTAL_DAYS-completed,pct:Math.round(completed/CONFIG.TOTAL_DAYS*100),streak};
+}
+
+function countdownParts(){
+  const now=Date.now();
+  const start=dateFromKey(data.startDate).getTime();
+  const end=dateFromKey(addDays(data.startDate,CONFIG.TOTAL_DAYS)).getTime();
+  let target=end,label="TIME LEFT IN THE JOURNEY";
+  if(now<start){target=start;label="TIME UNTIL DAY 1"}
+  if(now>=end){return {text:"00:00:00:00",label:"98-DAY JOURNEY COMPLETE"}}
+  let ms=Math.max(0,target-now);
+  const days=Math.floor(ms/86400000);ms%=86400000;
+  const hours=Math.floor(ms/3600000);ms%=3600000;
+  const mins=Math.floor(ms/60000);ms%=60000;
+  const secs=Math.floor(ms/1000);
+  return {text:`${pad(days)}:${pad(hours)}:${pad(mins)}:${pad(secs)}`,label};
+}
+
+function setText(id,text){const el=document.getElementById(id);if(el)el.textContent=text}
+function show(id,on=true){document.getElementById(id)?.classList.toggle("hidden",!on)}
+function toast(title,sub=""){
+  const wrap=document.getElementById("toastStack"),el=document.createElement("div");
+  el.className="toast";el.innerHTML=`<strong>${esc(title)}</strong><span>${esc(sub)}</span>`;
+  wrap.appendChild(el);setTimeout(()=>el.remove(),5200);
+}
+
+function renderStats(prefix){
+  const s=stats(),raw=rawCurrentDay();
+  setText(prefix+"Completed",s.completed);setText(prefix+"Remaining",s.remaining);
+  setText(prefix+"Percent",s.pct+"%");setText(prefix+"Streak",s.streak);
+  const bar=document.getElementById(prefix+"ProgressBar");if(bar)bar.style.width=s.pct+"%";
+  const dayText=raw<1?"PRE-LAUNCH":raw>CONFIG.TOTAL_DAYS?"DAY 98 · COMPLETE":`DAY ${pad(raw)}`;
+  setText(prefix+"Day",dayText);
+  setText(prefix+"Start",`Journey began ${longDate(data.startDate)} · Day 1`);
+  const c=countdownParts();setText(prefix+"Countdown",c.text);
+  if(prefix==="owner")setText("ownerCountdownLabel",c.label);
+}
+
+function dayBoxesHTML(){
+  const raw=rawCurrentDay();
+  let html="";
+  for(let n=1;n<=CONFIG.TOTAL_DAYS;n++){
+    const d=data.days[n],m=MOODS.find(x=>x.id===d.mood);
+    let cls="day-card";
+    if(n===raw)cls+=" today";
+    else if(n<raw)cls+=" past";
+    else cls+=" future";
+    const status=n>raw?"NOT OPEN YET":(d.permanentlySaved?"PERMANENTLY SAVED":(n===raw?"EDITABLE":"LOCKED"));
+    html+=`<button class="${cls}" data-day-card="${n}" ${n>raw?'disabled':''}>
+      <span class="day-num">DAY ${pad(n)}</span>
+      <span class="day-date">${longDate(d.date)}</span>
+      <span class="day-mood">${m?m.emoji:"·"}</span>
+      <span class="day-status">${status}</span>
+    </button>`;
+  }
+  return html;
+}
+function moodGridHTML(){
+  let html="";
+  const raw=rawCurrentDay();
+  for(let n=1;n<=CONFIG.TOTAL_DAYS;n++){
+    const d=data.days[n],m=MOODS.find(x=>x.id===d.mood);
+    let cls="mood-cell";
+    if(n>raw)cls+=" future";
+    else cls+=" clickable";
+    if(n===raw)cls+=" today";
+    if(d.permanentlySaved)cls+=" completed";
+    const style=m?`background:${m.color};box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 0 15px ${m.color}55`:"";
+    const title=n>raw?`Day ${n} is not open yet`:n===raw?`DAY ${n} — click to choose today's mood`:`Day ${n} — locked memory`;
+    html+=`<button class="${cls}" style="${style}" data-day="${n}" title="${esc(title)}" ${n>raw?'disabled':''}><span class="cell-number">${n}</span></button>`;
+  }
+  return html;
+}
+function renderCalendar(prefix){
+  const el=document.getElementById(prefix+"Calendar");if(el)el.innerHTML=moodGridHTML();
+  const legend=document.getElementById(prefix+"Legend");
+  if(legend)legend.innerHTML=MOODS.map(m=>`<span><i class="dot" style="background:${m.color}"></i>${esc(m.name)}</span>`).join("");
+}
+function renderDayBoxes(prefix){
+  const el=document.getElementById(prefix+"Days");if(el)el.innerHTML=dayBoxesHTML();
+}
+let connectionLastSeen=Number(localStorage.getItem("saturn_connection_last_seen")||0);
+function connectionAgeText(){
+  if(!connectionLastSeen)return "A MIN AGO";
+  const mins=Math.max(0,Math.floor((Date.now()-connectionLastSeen)/60000));
+  if(mins<1)return "JUST NOW";
+  if(mins===1)return "1 MIN AGO";
+  if(mins<60)return `${mins} MINS AGO`;
+  const hrs=Math.floor(mins/60);
+  if(hrs===1)return "1 HOUR AGO";
+  if(hrs<24)return `${hrs} HOURS AGO`;
+  const days=Math.floor(hrs/24);
+  return days===1?"1 DAY AGO":`${days} DAYS AGO`;
+}
+function renderConnection(){
+  const online=onlineMode && !!realtimeChannel;
+  if(online){
+    connectionLastSeen=Date.now();
+    localStorage.setItem("saturn_connection_last_seen",String(connectionLastSeen));
+  }
+  ["connectionStatus","viewerConnectionStatus"].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.classList.toggle("connection-live",online);
+    el.textContent=online?`ONLINE • ${connectionAgeText()}`:`OFFLINE • ${connectionAgeText()}`;
+  });
+}
+function renderOwnerMoodPalette(){
+  const el=document.getElementById("ownerMoodPalette");if(!el)return;
+  el.innerHTML=MOODS.map(m=>`<button data-inline-mood="${m.id}" title="${esc(m.name)}">${m.emoji}</button>`).join("");
+}
+function lockPreviousDays(){
+  const raw=rawCurrentDay();
+  if(raw<=1)return false;
+  let changed=false;
+  for(let i=1;i<raw&&i<=CONFIG.TOTAL_DAYS;i++){
+    const d=data.days[i];if(!d)continue;
+    if(!d.locked){
+      d.locked=true;
+      d.permanentlySaved=true;
+      d.completedAt=d.completedAt||new Date().toISOString();
+      d.permanentJournal=d.tempJournal||d.permanentJournal||"";
+      d.activity=Array.isArray(d.activity)?d.activity:[];
+      d.activity.unshift({label:"Day automatically locked at midnight",at:new Date().toISOString()});
+      changed=true;
+    }
+  }
+  if(changed){saveLocal();pushOnlineState()}
+  return changed;
+}
+
+function renderOwnerToday(){
+  const n=activeDay(),d=n?data.days[n]:null;
+  if(!n){setText("ownerTodayMeta","No active day right now.");return}
+  setText("ownerTodayMeta",`Day ${n} · ${longDate(d.date)}${d.permanentlySaved?" · PERMANENTLY SAVED":""}`);
+  if(draftDay!==n){draftDay=n;journalDraft=d.permanentlySaved?d.permanentJournal:(d.tempJournal||"")}
+  const moods=document.getElementById("ownerMoods");
+  moods.innerHTML=MOODS.map(m=>`<button class="mood-btn ${d.mood===m.id?"selected":""}" data-mood="${m.id}" ${d.permanentlySaved?"disabled":""}><span class="mood-emoji">${m.emoji}</span><span class="mood-name">${esc(m.name)}</span></button>`).join("");
+  const quests=document.getElementById("ownerQuests");
+  quests.innerHTML=QUESTS.map(([id,label])=>`<button class="quest-btn ${d.quests[id]?"selected":""}" data-quest="${id}" ${d.permanentlySaved?"disabled":""}><span>${esc(label)}</span><span class="check">✓</span></button>`).join("");
+  const ta=document.getElementById("ownerJournal");ta.value=journalDraft;ta.disabled=d.permanentlySaved;
+  document.getElementById("saveDraft").disabled=d.permanentlySaved;
+  document.getElementById("savePermanent").disabled=d.permanentlySaved;
+  setText("journalStatus",d.permanentlySaved?`Locked permanently on ${timeString(d.completedAt)}`:(d.updatedAt?`Last saved ${timeString(d.updatedAt)}`:"Draft not saved yet."));
+  const feed=document.getElementById("ownerFeed");
+  const items=data.reactions.slice(0,8);
+  feed.innerHTML=items.length?items.map(x=>`<div class="feed-item"><strong>${esc(x.message)}</strong><small>ADY · ${timeString(x.at)}</small></div>`).join(""):`<div class="status-line">No love has arrived yet. ✦</div>`;
+}
+
+function renderViewer(){
+  lockPreviousDays();renderStats("viewer");renderDayBoxes("viewer");renderCalendar("viewer");renderConnection();
+  const n=activeDay(),d=n?data.days[n]:null;
+  if(!d){setText("viewerTodayMeta","No active day right now.");return}
+  setText("viewerTodayMeta",`Day ${n} · ${longDate(d.date)}`);
+  const mood=MOODS.find(m=>m.id===d.mood);
+  setText("viewerMood",mood?mood.emoji:"—");setText("viewerMoodName",mood?mood.name:"No mood recorded yet");
+  const q=document.getElementById("viewerQuests");
+  const done=QUESTS.filter(([id])=>d.quests[id]);
+  q.innerHTML=done.length?done.map(([id,label])=>`<div class="feed-item"><strong>✓ ${esc(label)}</strong></div>`).join(""):`<div class="status-line">No quests marked yet.</div>`;
+  const journal=d.permanentlySaved?d.permanentJournal:d.tempJournal;
+  setText("viewerJournal",journal||"No journal update yet.");
+  setText("viewerUpdated",d.updatedAt?`Updated ${timeString(d.updatedAt)}`:"No update yet.");
+}
+
+function renderOwner(){lockPreviousDays();renderStats("owner");renderDayBoxes("owner");renderCalendar("owner");renderOwnerMoodPalette();renderOwnerToday();renderConnection();renderViewerPresence()}
+function renderAll(){if(role==="owner"){show("ownerApp",true);show("viewerApp",false);renderOwner()}else if(role==="viewer"){show("ownerApp",false);show("viewerApp",true);renderViewer()}else{show("ownerApp",false);show("viewerApp",false);show("loginScreen",true)}}
+function openLockPage(n){
+  const d=data.days[n];if(!d)return;
+  setText("lockDay",`DAY ${pad(n)}`);setText("lockDate",longDate(d.date));
+  setText("lockMessage",d.permanentlySaved?"This memory is permanently sealed. It is safe inside Saturn.":"This day is locked because its calendar orbit has passed.");
+  document.getElementById("lockView").onclick=()=>{show("lockPage",false);openHistory(n)};
+  document.getElementById("lockClose").onclick=()=>show("lockPage",false);
+  show("lockPage",true);
+}
+function openHistory(n){
+  if(!data.days[n])return;
+  const d=data.days[n],m=MOODS.find(x=>x.id===d.mood),done=QUESTS.filter(([id])=>d.quests[id]);
+  setText("historyTitle",`DAY ${pad(n)} · ${longDate(d.date)}`);
+  document.getElementById("historyContent").innerHTML=`
+    <p><strong>Status:</strong> ${d.permanentlySaved?"Permanently completed":"Locked / not permanently completed"}</p>
+    <p><strong>Mood:</strong> ${m?m.emoji+" "+esc(m.name):"—"}</p>
+    <p><strong>Quests:</strong> ${done.length?done.map(x=>esc(x[1])).join(" · "):"None recorded"}</p>
+    <p><strong>Journal:</strong></p>
+    <div class="journal-read">${esc(d.permanentlySaved?d.permanentJournal:(d.tempJournal||"No journal saved."))}</div>
+    <p style="margin-top:16px"><strong>Updates:</strong></p>
+    <div class="feed">${(d.activity||[]).map(a=>`<div class="feed-item"><strong>${esc(a.label)}</strong><small>${new Date(a.at).toLocaleString()}</small></div>`).join("")||"<div class='status-line'>No updates.</div>"}</div>`;
+  show("historyModal",true);
+}
+function openAction(title,body,confirmText,cb){
+  setText("actionTitle",title);setText("actionBody",body);setText("actionConfirm",confirmText);actionCallback=cb;show("actionModal",true);
+}
+function hideAction(){show("actionModal",false);actionCallback=null}
+
+function permanentComplete(){
+  const n=activeDay();if(!n)return;
+  const d=data.days[n];if(d.permanentlySaved)return;
+  addActivity(d,"Day permanently completed");
+  d.permanentlySaved=true;d.locked=true;d.completedAt=new Date().toISOString();d.permanentJournal=journalDraft;d.tempJournal=journalDraft;
+  data.motivationIndex=(data.motivationIndex+1)%MOTIVATION.length;
+  saveLocal();pushOnlineState();
+  renderOwner();
+  toast(`DAY ${pad(n)} CROSSED ✦`,MOTIVATION[data.motivationIndex]);
+}
+function resetAll(){
+  data=newData();saveLocal();journalDraft="";draftDay=null;pushOnlineState();renderOwner();toast("SATURN RESET","All local tracker data was cleared.");
+}
+function sendReaction(message){
+  const item={id:uid(),message,at:new Date().toISOString()};
+  data.reactions.unshift(item);data.reactions=data.reactions.slice(0,60);saveLocal();
+  if(onlineMode && realtimeChannel){
+    realtimeChannel.send({type:"broadcast",event:"love",payload:item});
+    persistSharedState();
+  }
+  document.getElementById("viewerSendStatus").textContent="Sent ✦";
+  setTimeout(()=>document.getElementById("viewerSendStatus").textContent="",1800);
+}
+function receiveReaction(item){
+  if(!data.reactions.some(x=>x.id===item.id)){data.reactions.unshift(item);data.reactions=data.reactions.slice(0,60);saveLocal()}
+  if(role==="owner"){renderOwner();toast(item.message,"Viewer • just now")}
+}
+
+async function connectRealtime(){
+  if(!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_KEY || !window.supabase){onlineMode=false;return}
+  try{
+    supabaseClient=window.supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_KEY);
+    onlineMode=true;
+
+    // Load the shared tracker state first, so a new phone/browser sees
+    // the same SATURN data instead of starting with its own local copy.
+    const {data:row,error:loadError}=await supabaseClient
+      .from("saturn_state").select("state").eq("id","main").maybeSingle();
+    if(!loadError && row?.state){
+      data=normalizeData(row.state);
+      saveLocal();
+    }else if(!loadError && role==="owner"){
+      await persistSharedState();
+    }
+
+    realtimeChannel=supabaseClient.channel("saturn-98-days-room",{
+      config:{presence:{key:role}}
+    });
+    realtimeChannel
+      .on("broadcast",{event:"state"},({payload})=>{
+        if(payload?.data){
+          data=normalizeData(payload.data);saveLocal();renderAll();
+        }
+      })
+      .on("broadcast",{event:"love"},({payload})=>{if(payload)receiveReaction(payload)})
+      .on("broadcast",{event:"presence_last_seen"},({payload})=>{
+        if(role==="owner" && payload?.at){
+          viewerOnline=false;
+          viewerLastSeen=new Date(payload.at).getTime();
+          data.viewerLastSeen=new Date(viewerLastSeen).toISOString();
+          saveLocal();
+          persistSharedState();
+          renderViewerPresence();
+        }
+      })
+      .on("presence",{event:"sync"},updatePresence)
+      .on("presence",{event:"join"},updatePresence)
+      .on("presence",{event:"leave"},updatePresence)
+      .subscribe(async status=>{
+        if(status==="SUBSCRIBED"){
+          renderConnection();
+          const nowIso=new Date().toISOString();
+          await realtimeChannel.track({role,online_at:nowIso});
+          if(role==="viewer"){
+            viewerLastSeen=Date.now();
+            data.viewerLastSeen=nowIso;
+            saveLocal();
+          }
+          updatePresence();
+          await persistSharedState();
+        }
+      });
+  }catch(e){
+    onlineMode=false;renderConnection();
+    console.warn("Supabase unavailable; using local mode.",e);
+  }
+}
+function elapsedPresenceLabel(ts){
+  if(!ts)return "OFFLINE";
+  const mins=Math.max(0,Math.floor((Date.now()-ts)/60000));
+  if(mins<1)return "JUST NOW";
+  if(mins===1)return "1 MIN AGO";
+  if(mins<60)return `${mins} MINS AGO`;
+  const hrs=Math.floor(mins/60);
+  if(hrs===1)return "1 HOUR AGO";
+  if(hrs<24)return `${hrs} HOURS AGO`;
+  const days=Math.floor(hrs/24);
+  return days===1?"1 DAY AGO":`${days} DAYS AGO`;
+}
+function renderViewerPresence(){
+  if(role!=="owner")return;
+  const el=document.getElementById("viewerPresence");
+  if(!el)return;
+  el.classList.toggle("live",viewerOnline);
+  el.textContent=`ADY • ${elapsedPresenceLabel(viewerLastSeen)}`;
+}
+function updatePresence(){
+  if(!realtimeChannel)return;
+  const state=realtimeChannel.presenceState();
+  const viewers=Object.values(state).flat().filter(x=>x.role==="viewer");
+  viewerOnline=viewers.length>0;
+  if(viewerOnline){
+    const stamp=viewers[0]?.online_at;
+    if(stamp){
+      viewerLastSeen=new Date(stamp).getTime();
+      data.viewerLastSeen=new Date(viewerLastSeen).toISOString();
+    }
+  }else if(!viewerLastSeen && data.viewerLastSeen){
+    viewerLastSeen=new Date(data.viewerLastSeen).getTime();
+  }
+  renderViewerPresence();
+}
+
+async function persistSharedState(){
+  if(!onlineMode||!supabaseClient)return;
+  try{
+    const {error}=await supabaseClient.from("saturn_state").upsert({
+      id:"main",state:data,updated_at:new Date().toISOString()
+    });
+    if(error) throw error;
+  }catch(e){console.warn("Shared state save failed:",e)}
+}
+function pushOnlineState(){
+  if(!onlineMode||!realtimeChannel)return;
+  realtimeChannel.send({type:"broadcast",event:"state",payload:{data}});
+  persistSharedState();
+}
+async function leaveRealtime(){
+  if(realtimeChannel){try{await realtimeChannel.untrack();await supabaseClient.removeChannel(realtimeChannel)}catch(e){}}
+  realtimeChannel=null;
+}
+
+function login(){
+  const pin=document.getElementById("pinInput").value.trim();
+  let next=null;if(pin===CONFIG.OWNER_PIN)next="owner";if(pin===CONFIG.VIEWER_PIN)next="viewer";
+  if(!next){setText("loginError","That PIN isn't recognized.");return}
+  role=next;document.getElementById("pinInput").value="";setText("loginError","");
+  show("loginScreen",false);renderAll();connectRealtime();
+}
+async function logout(){
+  if(role==="viewer"){
+    const at=new Date().toISOString();
+    viewerLastSeen=Date.now();
+    data.viewerLastSeen=at;
+    saveLocal();
+    if(realtimeChannel){
+      try{await realtimeChannel.send({type:"broadcast",event:"presence_last_seen",payload:{at}})}catch(e){}
+    }
+    await persistSharedState();
+  }
+  await leaveRealtime();
+  role=null;viewerOnline=false;
+  show("loginScreen",true);show("ownerApp",false);show("viewerApp",false);setText("loginError","");
+  document.getElementById("pinInput")?.focus();
+}
+
+window.addEventListener("beforeunload",()=>{
+  if(role==="viewer"&&realtimeChannel){
+    const at=new Date().toISOString();
+    try{realtimeChannel.send({type:"broadcast",event:"presence_last_seen",payload:{at}})}catch(e){}
+  }
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+  for(let i=0;i<120;i++){
+    const s=document.createElement("i");s.className="star";s.style.left=Math.random()*100+"%";s.style.top=Math.random()*100+"%";
+    s.style.animationDelay=Math.random()*3+"s";s.style.opacity=(.2+Math.random()*.7).toFixed(2);document.getElementById("space").appendChild(s);
+  }
+  document.getElementById("loginBtn").addEventListener("click",login);
+  document.getElementById("pinInput").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
+  document.getElementById("ownerLogout").addEventListener("click",logout);
+  document.getElementById("viewerLogout").addEventListener("click",logout);
+  document.getElementById("closeHistory").addEventListener("click",()=>show("historyModal",false));
+  document.getElementById("actionCancel").addEventListener("click",hideAction);
+  document.getElementById("actionConfirm").addEventListener("click",()=>{const cb=actionCallback;hideAction();if(cb)cb()});
+  document.getElementById("ownerReset").addEventListener("click",()=>openAction("Reset SATURN?","This permanently clears the tracker data stored in this browser. This cannot be undone.","RESET EVERYTHING",resetAll));
+  document.getElementById("ownerJournal").addEventListener("input",e=>{journalDraft=e.target.value});
+  document.getElementById("saveDraft").addEventListener("click",()=>{
+    const n=activeDay();if(!n)return;const d=data.days[n];journalDraft=document.getElementById("ownerJournal").value;
+    d.tempJournal=journalDraft;addActivity(d,"Temporary journal saved");saveLocal();pushOnlineState();renderOwner();toast("Draft saved","Your journal is still editable.");
+  });
+  document.getElementById("savePermanent").addEventListener("click",()=>{
+    const n=activeDay();if(!n)return;
+    openAction(`Complete DAY ${pad(n)}?`,"Permanent completion locks today's mood, quests and journal. Only the real current calendar day can be permanently completed.","PERMANENTLY SAVE",permanentComplete);
+  });
+
+  document.getElementById("ownerMoods").addEventListener("click",e=>{
+    const btn=e.target.closest("[data-mood]");if(!btn)return;const n=activeDay();if(!n)return;const d=data.days[n];if(d.permanentlySaved)return;
+    d.mood=btn.dataset.mood;addActivity(d,`Mood changed to ${MOODS.find(m=>m.id===d.mood).name}`);saveLocal();pushOnlineState();renderOwner();
+  });
+  document.getElementById("ownerQuests").addEventListener("click",e=>{
+    const btn=e.target.closest("[data-quest]");if(!btn)return;const n=activeDay();if(!n)return;const d=data.days[n];if(d.permanentlySaved)return;
+    const id=btn.dataset.quest;d.quests[id]=!d.quests[id];addActivity(d,`${d.quests[id]?"Completed":"Unchecked"} quest: ${QUESTS.find(q=>q[0]===id)[1]}`);saveLocal();pushOnlineState();renderOwner();
+  });
+  document.getElementById("ownerCalendar").addEventListener("click",e=>{
+    const cell=e.target.closest("[data-day]");if(!cell)return;const n=Number(cell.dataset.day),raw=rawCurrentDay();
+    if(n>raw){toast("Not open yet","Future days unlock automatically on their calendar date.");return}
+    if(n===raw && !data.days[n].permanentlySaved){
+      const palette=document.getElementById("ownerMoodPalette");palette.classList.toggle("show");
+      palette.dataset.day=String(n);
+    }else openLockPage(n);
+  });
+  document.getElementById("ownerMoodPalette").addEventListener("click",e=>{
+    const btn=e.target.closest("[data-inline-mood]");if(!btn)return;
+    const n=Number(document.getElementById("ownerMoodPalette").dataset.day);
+    if(n!==activeDay())return;const d=data.days[n];if(d.permanentlySaved)return;
+    d.mood=btn.dataset.inlineMood;addActivity(d,`Mood changed to ${MOODS.find(m=>m.id===d.mood).name}`);
+    saveLocal();pushOnlineState();document.getElementById("ownerMoodPalette").classList.remove("show");renderOwner();toast("Mood filled ✦",MOODS.find(m=>m.id===d.mood).name);
+  });
+  document.getElementById("ownerDays").addEventListener("click",e=>{
+    const card=e.target.closest("[data-day-card]");if(!card)return;const n=Number(card.dataset.dayCard),raw=rawCurrentDay();
+    if(n>raw){toast("Not open yet","That day has not arrived.");return}
+    if(n===raw && !data.days[n].permanentlySaved){document.getElementById("ownerCalendar").scrollIntoView({behavior:"smooth",block:"center"});return}
+    openLockPage(n);
+  });
+  document.getElementById("viewerCalendar").addEventListener("click",e=>{
+    const cell=e.target.closest("[data-day]");if(!cell)return;const n=Number(cell.dataset.day),raw=rawCurrentDay();
+    if(n>raw){toast("Locked","That day has not arrived yet.");return}
+    if(n>=1&&n<=CONFIG.TOTAL_DAYS)openLockPage(n);
+  });
+  document.getElementById("viewerDays").addEventListener("click",e=>{
+    const card=e.target.closest("[data-day-card]");if(!card)return;const n=Number(card.dataset.dayCard);
+    if(n>=1&&n<=CONFIG.TOTAL_DAYS)openLockPage(n);
+  });
+  document.querySelectorAll(".reaction").forEach(btn=>btn.addEventListener("click",()=>sendReaction(btn.dataset.reaction)));
+  setInterval(()=>{if(role){lockPreviousDays();if(role==="owner")renderOwner();else renderViewer();renderConnection()}},5000);
+  setInterval(()=>{if(role){if(role==="owner")renderStats("owner");else renderStats("viewer");renderConnection()}},1000);
+  renderAll();
+});
+</script>
+</body>
+</html>
